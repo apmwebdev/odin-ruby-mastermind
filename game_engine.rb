@@ -1,5 +1,5 @@
-require_relative 'matcher.rb'
-require_relative 'game_ui'
+require_relative "matcher"
+require_relative "game_ui"
 
 class GameEngine
   def initialize
@@ -13,7 +13,7 @@ class GameEngine
     @game_over = false
   end
 
-  def play_game
+  def play
     show_intro
   end
 
@@ -23,12 +23,12 @@ class GameEngine
     @game_ui.show_intro_1
     puts " Press 1 to see an example or 0 to play now"
     answer_1 = gets.chomp
-    if answer_1 == '1' || answer_1 == ''
+    if answer_1 == "1" || answer_1 == ""
       @game_ui.show_intro_2
       puts " Press Enter to continue"
       gets.chomp
       choose_mode
-    elsif answer_1 == '0'
+    elsif answer_1 == "0"
       choose_mode
     else
       show_intro
@@ -39,11 +39,11 @@ class GameEngine
     @game_ui.show_choose_mode
     puts " Enter your selection"
     answer = gets.chomp
-    if answer == '1'
+    if answer == "1"
       play_as_code_breaker
-    elsif answer == '2'
+    elsif answer == "2"
       play_as_code_setter
-    elsif answer == '3'
+    elsif answer == "3"
       show_intro
     else
       choose_mode
@@ -51,6 +51,19 @@ class GameEngine
   end
 
   def play_as_code_breaker
+    @code_breaker = HumanPlayer.new
+    @code_setter = ComputerPlayer.new
+    do_main_play_sequence
+  end
+
+  def play_as_code_setter
+    @code_setter = HumanPlayer.new
+    @code_breaker = ComputerPlayer.new
+    do_main_play_sequence
+  end
+
+  def do_main_play_sequence
+    set_code
     until @game_over
       render_ui
       get_guess
@@ -58,12 +71,15 @@ class GameEngine
     end
   end
 
-  def play_as_code_setter
-    # do stuff
-  end
-  
-  def create_code(test_input = nil)
-    @code = test_input || Array.new(4) { rand(1..6) }
+  def set_code
+    code_is_valid = false
+    until code_is_valid
+      user_input = @code_setter.set_code
+      if valid_code_or_guess?(user_input)
+        @code = format_code_or_guess(user_input)
+        code_is_valid = true
+      end
+    end
   end
 
   def render_ui
@@ -73,21 +89,20 @@ class GameEngine
   def get_guess
     guess_is_valid = false
     until guess_is_valid
-      puts 'Enter 4 digits between 1 and 6:'
-      user_input = gets.chomp
-      if valid_guess?(user_input)
-        submit_guess(format_guess(user_input))
+      user_input = @code_breaker.make_guess
+      if valid_code_or_guess?(user_input)
+        submit_guess(format_code_or_guess(user_input))
         guess_is_valid = true
       end
     end
   end
 
-  def valid_guess?(guess)
+  def valid_code_or_guess?(guess)
     !guess.nil? && guess.length == 4 && !guess.match(/\D|[7-9]|0/)
   end
 
-  def format_guess(guess)
-    guess.split('').map(&:to_i)
+  def format_code_or_guess(guess)
+    guess.chars.map(&:to_i)
   end
 
   def submit_guess(guess)
@@ -103,14 +118,14 @@ class GameEngine
 
   def check_for_game_over
     latest_entry = @guesses_and_matches_log[-1]
-    if latest_entry[:matches].all?('exact')
+    if latest_entry[:matches].all?("exact")
       @game_over = true
       render_ui
-      puts "You win! #{latest_entry[:guess]} was the correct answer!"
+      puts "#{@code_breaker.name} wins! #{latest_entry[:guess]} was the correct answer!"
     elsif @guesses_and_matches_log.length >= 12
       @game_over = true
       render_ui
-      puts "You lose. The code was #{@code}"
+      puts "#{@code_setter.name} wins! The code was #{@code}"
     end
   end
 end

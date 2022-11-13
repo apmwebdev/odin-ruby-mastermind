@@ -6,35 +6,35 @@ class GameUI
     @padding = 2
     @guess_width = 7
     @matches_width = 11
-    @row_divider = ''
-    @blank_row = ''
+    @row_divider = ""
+    @blank_row = ""
     set_row_divider
     set_blank_row
   end
 
   def show_intro_1
-    txt = <<-intro_text
+    txt = <<-INTRO_TEXT
 
   #{"MASTERMIND".bold.underline.cyan}
 
  Mastermind is a logic game played between two players. The #{code_setter} comes up
  with a secret code, and the #{code_breaker} tries to guess it.
 
- In this version of the game, the secret code consists of a #{'4 digit number'.bold.yellow}, 
- where the individual digits of the number can be between #{'1'.green.bold} and #{'6'.green.bold}, and repeats 
- #{'are'.italic.bold} allowed. For example, #{' 1234 '.inv}, #{' 6544 '.inv}, and #{' 1111 '.inv} are all valid codes.
+ In this version of the game, the secret code consists of a #{"4 digit number".bold.yellow}, 
+ where the individual digits of the number can be between #{"1".green.bold} and #{"6".green.bold}, and repeats 
+ #{"are".italic.bold} allowed. For example, #{" 1234 ".inv}, #{" 6544 ".inv}, and #{" 1111 ".inv} are all valid codes.
 
- The #{code_breaker} has a certain number of tries (#{'12'.red.bold} by default) to break the
+ The #{code_breaker} has a certain number of tries (#{"12".red.bold} by default) to break the
  code. With each guess, the code breaker gets feedback in the form of 4 colored
- circles that will be some combination of #{'green'.green} #{green}, #{'yellow'.yellow} #{yellow}, and #{'red'.red} #{red}
+ circles that will be some combination of #{"green".green} #{green}, #{"yellow".yellow} #{yellow}, and #{"red".red} #{red}
 
-  #{green}: Each #{'green'.green.bold} circle represents one digit in the guess where the #{'number'.bold} as
-      well as the #{'location'.bold} of the number are both correct.
+  #{green}: Each #{"green".green.bold} circle represents one digit in the guess where the #{"number".bold} as
+      well as the #{"location".bold} of the number are both correct.
 
-  #{yellow}: Each #{'yellow'.yellow.bold} circle represents one digit in the guess where the #{'number'.bold} is
-      correct, but the #{'location'.bold} is incorrect.
+  #{yellow}: Each #{"yellow".yellow.bold} circle represents one digit in the guess where the #{"number".bold} is
+      correct, but the #{"location".bold} is incorrect.
 
-  #{red}: Each #{'red'.red.bold} circle represents one digit in the guess that doesn't show up
+  #{red}: Each #{"red".red.bold} circle represents one digit in the guess that doesn't show up
       in the secret code (or shows up in the secret code fewer times than the
       number of times you guessed that number).
 
@@ -42,24 +42,24 @@ class GameUI
  computer will play the other role.
 
 
-intro_text
+    INTRO_TEXT
     clear_screen
     puts txt
   end
 
   def show_intro_2
-    txt = <<-intro_text_2
+    txt = <<-INTRO_TEXT_2
 
   #{"MASTERMIND".bold.underline.cyan}
     
-    #{'EXAMPLE:'.bold.blue} Code is #{' 1234 '.inv}
+    #{"EXAMPLE:".bold.blue} Code is #{" 1234 ".inv}
  #{@row_divider}
- |   #{'GUESS'.bold}   |    #{'FEEDBACK'.bold}   |     The first #{' 1 '.inv} is in the right place (#{green}) and
- #{@row_divider}     the first one of the #{' 2 '.inv}s gets counted (#{yellow}).
- |  1 1 2 2  |  #{green} #{yellow} #{red} #{red}  | <-- The second #{' 1 '.inv} and #{' 2 '.inv} get marked as #{red}.
+ |   #{"GUESS".bold}   |    #{"FEEDBACK".bold}   |     The first #{" 1 ".inv} is in the right place (#{green}) and
+ #{@row_divider}     the first one of the #{" 2 ".inv}s gets counted (#{yellow}).
+ |  1 1 2 2  |  #{green} #{yellow} #{red} #{red}  | <-- The second #{" 1 ".inv} and #{" 2 ".inv} get marked as #{red}.
  #{@row_divider}
- |  3 4 5 6  |  #{yellow} #{yellow} #{red} #{red}  | <-- The #{' 3 '.inv} and #{' 4 '.inv} are both present, but in the
- #{@row_divider}     wrong place, so they're both #{yellow}. #{' 5 '.inv} and #{' 6 '.inv}
+ |  3 4 5 6  |  #{yellow} #{yellow} #{red} #{red}  | <-- The #{" 3 ".inv} and #{" 4 ".inv} are both present, but in the
+ #{@row_divider}     wrong place, so they're both #{yellow}. #{" 5 ".inv} and #{" 6 ".inv}
  |  2 1 3 4  |  #{green} #{green} #{yellow} #{yellow}  |     don't show up in the code at all, so they 
  #{@row_divider}     result in 2 #{red}.
  |  1 2 3 4  |  #{green} #{green} #{green} #{green}  | <-- WIN!
@@ -80,26 +80,26 @@ intro_text
  OK, let's play!
 
 
-    intro_text_2
+    INTRO_TEXT_2
     clear_screen
     puts txt
   end
 
   def show_choose_mode
-    txt = <<-choose_mode_text
+    txt = <<-CHOOSE_MODE_TEXT
 
   #{"MASTERMIND".bold.underline.cyan}
 
- #{'Choose mode:'.bold}
+ #{"Choose mode:".bold}
 
- Press #{'1'.red.bold} to be the #{'CODE BREAKER'.red.bold}
+ Press #{"1".red.bold} to be the #{"CODE BREAKER".red.bold}
 
- Press #{'2'.green.bold} to be the #{'CODE SETTER'.green.bold}
+ Press #{"2".green.bold} to be the #{"CODE SETTER".green.bold}
 
- Press #{'3'.blue.bold} to go back to the #{'INSTRUCTIONS'.blue.bold}
+ Press #{"3".blue.bold} to go back to the #{"INSTRUCTIONS".blue.bold}
 
 
-    choose_mode_text
+    CHOOSE_MODE_TEXT
     clear_screen
     puts txt
   end
@@ -116,8 +116,8 @@ intro_text
     clear_screen
     render_data = []
     game_data.each do |row|
-      guess = row[:guess].join(' ')
-      matches = format_matches(row[:matches]).join(' ')
+      guess = row[:guess].join(" ")
+      matches = format_matches(row[:matches]).join(" ")
       row_output = "|  #{guess}  |  #{matches}  |"
       render_data.push(@row_divider)
       render_data.push(row_output)
@@ -126,21 +126,22 @@ intro_text
       render_data.push(@row_divider)
       render_data.push(@blank_row)
     end
+    render_data.push(@row_divider)
     puts add_in_game_instructions_to_render(render_data)
   end
 
   private
 
   def set_row_divider
-    row_width.times { @row_divider += '-' }
+    row_width.times { @row_divider += "-" }
   end
 
   def set_blank_row
-    @blank_row = '|'
-    (@guess_width + @padding * 2).times { @blank_row += ' '}
-    @blank_row += '|'
-    (@matches_width + @padding * 2).times { @blank_row += ' '}
-    @blank_row += '|'
+    @blank_row = "|"
+    (@guess_width + @padding * 2).times { @blank_row += " "}
+    @blank_row += "|"
+    (@matches_width + @padding * 2).times { @blank_row += " "}
+    @blank_row += "|"
   end
 
   def row_width
@@ -150,11 +151,9 @@ intro_text
 
   def add_in_game_instructions_to_render(render_data)
     instructions = []
-    instructions.push underline("Instructions:")
+    instructions.push underline("Reminder:")
     instructions.push "Enter a 4 digit number comprised of digits 1 - 6."
     instructions.push ""
-    instructions.push "You will get feedback on your guess in the form of"
-    instructions.push "colored circles:"
     instructions.push "  - For every green circle #{green}, that means"
     instructions.push "    you got a digit and the location of that digit"
     instructions.push "    correct."
@@ -172,10 +171,6 @@ intro_text
     instructions.push "match up to the placement of digits in your guess."
     instructions.push "Green circles always come first, then yellow, then"
     instructions.push "red."
-    # instructions.each do |value|
-    #   puts value if value.length > 50
-    #   puts value.length
-    # end
 
     render_data.map.with_index { |val, i| "#{val} #{instructions[i]}" }
   end
@@ -187,11 +182,11 @@ intro_text
   def format_matches(matches)
     matches.map do |match|
       case match
-      when 'none'
+      when "none"
         red
-      when 'partial'
+      when "partial"
         yellow
-      when 'exact'
+      when "exact"
         green
       else
         "\u25ef"
@@ -200,17 +195,17 @@ intro_text
   end
 
   def green(str = nil)
-    str = str || CIRCLE_CHAR
+    str ||= CIRCLE_CHAR
     "\e[92m#{str} \e[0m"
   end
 
   def yellow(str = nil)
-    str = str || CIRCLE_CHAR
+    str ||= CIRCLE_CHAR
     "\e[93m#{str} \e[0m"
   end
 
   def red(str = nil)
-    str = str || CIRCLE_CHAR
+    str ||= CIRCLE_CHAR
     "\e[91m#{str} \e[0m"
   end
 
