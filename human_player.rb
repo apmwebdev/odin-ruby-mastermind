@@ -9,8 +9,8 @@ class HumanPlayer < Player
     gets.chomp
   end
 
-  def make_guess
-    puts "Enter 4 digits between 1 and 6:"
+  def make_guess(guess_number)
+    puts "Guess #{guess_number + 1}. Enter 4 digits between 1 and 6:"
     gets.chomp
   end
 end

@@ -8,8 +8,10 @@ class GameUI
     @matches_width = 11
     @row_divider = ""
     @blank_row = ""
+    @header_row = ""
     set_row_divider
     set_blank_row
+    set_header_row
   end
 
   def show_intro_1
@@ -123,6 +125,8 @@ class GameUI
   def render_ui(game_data)
     clear_screen
     render_data = []
+    render_data.push(@row_divider)
+    render_data.push(@header_row)
     game_data.each do |row|
       guess = row[:guess].join(" ")
       matches = format_matches(row[:matches]).join(" ")
@@ -139,6 +143,18 @@ class GameUI
   end
 
   private
+
+  def set_header_row
+    @header_row += "|"
+    @padding.times { @header_row += " "}
+    @header_row += " GUESS ".bold
+    @padding.times { @header_row += " "}
+    @header_row += "|"
+    @padding.times { @header_row += " "}
+    @header_row += " FEEDBACK  ".bold
+    @padding.times { @header_row += " "}
+    @header_row += "|"
+  end
 
   def set_row_divider
     row_width.times { @row_divider += "-" }
@@ -160,7 +176,6 @@ class GameUI
   def add_in_game_instructions_to_render(render_data)
     instructions = []
     instructions.push underline("Reminder:")
-    instructions.push "Enter a 4 digit number comprised of digits 1 - 6."
     instructions.push ""
     instructions.push "#{green} means digit and location are correct"
     instructions.push ""

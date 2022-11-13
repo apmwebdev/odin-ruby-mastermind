@@ -2,8 +2,9 @@ require_relative "matcher"
 require_relative "game_ui"
 
 class GameEngine
-  def initialize
+  def initialize(test_code = nil)
     @code = []
+    @test_code = test_code
     # @code = [5, 5, 3, 4]
     # @code = [2, 1, 1, 5]
     @code_setter = nil
@@ -93,7 +94,13 @@ class GameEngine
   def set_code
     code_is_valid = false
     until code_is_valid
-      user_input = @code_setter.set_code
+      if @code_setter.is_a? HumanPlayer
+        user_input = @code_setter.set_code
+      elsif @code_setter.is_a? ComputerPlayer
+        user_input = @code_setter.set_code(@test_code)
+      else
+        raise "No code_setter set"
+      end
       if valid_code_or_guess?(user_input)
         @code = format_code_or_guess(user_input)
         code_is_valid = true
@@ -108,7 +115,13 @@ class GameEngine
   def get_guess
     guess_is_valid = false
     until guess_is_valid
-      user_input = @code_breaker.make_guess
+      if @code_breaker.is_a? HumanPlayer
+        user_input = @code_breaker.make_guess(@guesses_and_matches_log.length)
+      elsif @code_breaker.is_a? ComputerPlayer
+        user_input = @code_breaker.make_guess
+      else
+        raise "No code_breaker set"
+      end
       if valid_code_or_guess?(user_input)
         submit_guess(format_code_or_guess(user_input))
         guess_is_valid = true
