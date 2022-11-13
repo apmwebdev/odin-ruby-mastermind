@@ -15,6 +15,14 @@ class String
     "\e[94m#{self}\e[0m"
   end
 
+  def purple
+    "\e[95m#{self}\e[0m"
+  end
+
+  def cyan
+    "\e[96m#{self}\e[0m"
+  end
+
   def bold
     "\e[1m#{self}\e[22m"
   end
@@ -27,7 +35,7 @@ class String
     "\e[4m#{self}\e[24m"
   end
 
-  def invert_color
+  def inv
     "\e[7m#{self}\e[27m"
   end
 end
