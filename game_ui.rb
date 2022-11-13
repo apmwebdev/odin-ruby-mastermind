@@ -66,10 +66,10 @@ class GameUI
  #{@row_divider}
 
  As shown in the first guess above, you'll only get as many #{green} and/or #{yellow} for a
- given number for:
+ given number as:
 
-   a) however many times it shows up in the code, or
-   b) however many times it shows up in your guess,
+   a) the number of times it shows up in the code, or
+   b) the number of times it shows up in your guess,
 
  whichever is lower.
 
@@ -92,11 +92,11 @@ class GameUI
 
  #{"Choose mode:".bold}
 
- Press #{"1".red.bold} to be the #{"CODE BREAKER".red.bold}
+ Enter #{"1".red.bold} to be the #{code_breaker}
 
- Press #{"2".green.bold} to be the #{"CODE SETTER".green.bold}
+ Enter #{"2".green.bold} to be the #{code_setter}
 
- Press #{"3".blue.bold} to go back to the #{"INSTRUCTIONS".blue.bold}
+ Enter #{"3".blue.bold} to go back to the #{"INSTRUCTIONS".blue.bold}
 
 
     CHOOSE_MODE_TEXT
@@ -110,6 +110,14 @@ class GameUI
 
   def code_setter
     "code setter".upcase.bold.green
+  end
+
+  def show_play_again
+    puts "Play again?"
+    puts "Enter #{"1".red.bold} for #{code_breaker}"
+    puts "Enter #{"2".green.bold} for #{code_setter}"
+    puts "Enter #{"3".blue.bold} for #{"INSTRUCTIONS".blue.bold}"
+    puts "Enter any other key to quit"
   end
 
   def render_ui(game_data)
@@ -154,21 +162,12 @@ class GameUI
     instructions.push underline("Reminder:")
     instructions.push "Enter a 4 digit number comprised of digits 1 - 6."
     instructions.push ""
-    instructions.push "  - For every green circle #{green}, that means"
-    instructions.push "    you got a digit and the location of that digit"
-    instructions.push "    correct."
-    instructions.push "  - For every yellow circle #{yellow}, that means"
-    instructions.push "    you got a digit correct, but not its"
-    instructions.push "    location."
-    instructions.push "  - For every red circle #{red}, that means you"
-    instructions.push "    guessed a digit that is not part of the"
-    instructions.push "    answer, or you guessed a digit too many"
-    instructions.push "    times. For example, guessing 1111 when"
-    instructions.push "    the answer was 1234 would result in"
-    instructions.push "    #{green} #{red} #{red} #{red}"
+    instructions.push "#{green} means digit and location are correct"
     instructions.push ""
-    instructions.push "Note that the placement of the circles doesn't"
-    instructions.push "match up to the placement of digits in your guess."
+    instructions.push "#{yellow} means digit is correct, location is not"
+    instructions.push ""
+    instructions.push "#{red} means digit is incorrect"
+    instructions.push ""
     instructions.push "Green circles always come first, then yellow, then"
     instructions.push "red."
 

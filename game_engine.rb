@@ -21,7 +21,7 @@ class GameEngine
 
   def show_intro
     @game_ui.show_intro_1
-    puts " Press 1 to see an example or 0 to play now"
+    puts " Enter 1 to see an example or 0 to play now"
     answer_1 = gets.chomp
     if answer_1 == "1" || answer_1 == ""
       @game_ui.show_intro_2
@@ -37,7 +37,6 @@ class GameEngine
 
   def choose_mode
     @game_ui.show_choose_mode
-    puts " Enter your selection"
     answer = gets.chomp
     if answer == "1"
       play_as_code_breaker
@@ -69,6 +68,26 @@ class GameEngine
       get_guess
       check_for_game_over
     end
+    maybe_play_again
+  end
+
+  def maybe_play_again
+    reset_game
+    @game_ui.show_play_again
+    answer = gets.chomp
+    case answer
+    when "1"
+      play_as_code_breaker
+    when "2"
+      play_as_code_setter
+    when "3"
+      show_intro
+    end
+  end
+
+  def reset_game
+    @game_over = false
+    @guesses_and_matches_log = []
   end
 
   def set_code
@@ -113,7 +132,10 @@ class GameEngine
   end
   
   def log_guess_and_matches(guess, matches)
-    @guesses_and_matches_log.push({ guess: guess, matches: matches })
+    @guesses_and_matches_log.push({guess: guess, matches: matches})
+    if @code_breaker.is_a? ComputerPlayer
+      @code_breaker.guesses_and_matches_log = @guesses_and_matches_log
+    end
   end
 
   def check_for_game_over
